@@ -7,13 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.desafio_eyetec.data.local.UserDao
-import com.example.desafio_eyetec.data.local.entities.UserEntity
+import com.example.desafio_eyetec.domain.models.User
+import com.example.desafio_eyetec.domain.repositories.UserRepository
+import com.example.desafio_eyetec.domain.repositories.UserRepositoryLocalImpl
 import kotlinx.coroutines.launch
-import kotlin.uuid.Uuid
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var userDao: UserDao
+    private lateinit var userRepository: UserRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,34 +25,41 @@ class MainActivity : AppCompatActivity() {
         }
 
         val app = applicationContext as DesafioEyetecApp
-        userDao = app.database.UserDao()
+        userRepository = UserRepositoryLocalImpl(app.database.UserDao())
 
         testDb()
     }
 
-    private fun testDb(){
+    private fun testDb() {
         lifecycleScope.launch {
-            val newUserEnable = UserEntity(name = "Arthur", age = 7, email = "arthur@gmail.com", enable = true )
-            val newUserDisable = UserEntity(name = "João Neto", age = 36, email = "joaomouratocn@gmail.com", enable = false )
+            val newUserEnable =
+                User(
+                    name = "Arthur",
+                    age = 7,
+                    email = "arthur@gmail.com",
+                    enable = true
+                )
+            val newUserDisable = User(
+                name = "João Neto",
+                age = 36,
+                email = "joaomouratocn@gmail.com",
+                enable = false
+            )
+            userRepository.insertUsers(listOf(newUserEnable, newUserDisable))
+            Log.d("USERS", userRepository.getUserByStatus(true).toString())
+            Log.d("USERS", userRepository.getUserByStatus(false).toString())
+            Log.d("USERS", "Usuários cadasrados")
 
-            userDao.insertUser(listOf(newUserEnable, newUserDisable))
-
-            Log.d("USERS", userDao.getUsersByStatus(true).toString())
-            Log.d("USERS", userDao.getUsersByStatus(false).toString())
-
-            val disableUsers = userDao.getUsersByStatus(false)
+            val disableUsers = userRepository.getUserByStatus(false)
             val editedUser = disableUsers.first().copy(enable = true)
-            userDao.updateUser(editedUser)
+            userRepository.updateUser(editedUser)
+            Log.d("USERS", userRepository.getUserByStatus(true).toString())
+            Log.d("USERS", userRepository.getUserByStatus(false).toString())
+            Log.d("USERS", "Usuarios alterados")
 
-            Log.d("USERS", userDao.getUsersByStatus(true).toString())
-            Log.d("USERS", userDao.getUsersByStatus(false).toString())
-
-            userDao.deleteUser(editedUser)
-
-            Log.d("USERS", userDao.getUsersByStatus(true).toString())
-
-
-
+            userRepository.deleteUser(editedUser)
+            Log.d("USERS", userRepository.getUserByStatus(true).toString())
+            Log.d("USERS", "Usuarios alterados")
         }
     }
 }
