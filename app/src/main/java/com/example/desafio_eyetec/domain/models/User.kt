@@ -5,5 +5,6 @@ data class User(
     val name: String,
     val age: Int,
     val email: String,
-    val enable: Boolean
+    val enable: Boolean,
+    val photoPath: String? = null
 )

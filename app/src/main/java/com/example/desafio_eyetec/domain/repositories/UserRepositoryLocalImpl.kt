@@ -19,7 +19,7 @@ class UserRepositoryLocalImpl(private val userDao: UserDao): UserRepository {
         userDao.deleteUser(user.toUserEntity())
     }
 
-    override suspend fun getUserByStatus(status: Boolean): List<User> {
+    override suspend fun getUsersByStatus(status: Boolean): List<User> {
         return userDao.getUsersByStatus(status).map { userEntity -> userEntity.toUser() }
     }
 

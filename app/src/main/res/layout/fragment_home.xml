@@ -13,11 +13,13 @@
         android:id="@+id/btn_new_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/novo_usuario" />
+        android:text="@string/new_user"
+        android:textColor="@android:color/white"/>
 
     <Button
         android:id="@+id/btn_all_users"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/todos_usuarios" />
+        android:text="@string/all_users"
+        android:textColor="@android:color/white"/>
 </LinearLayout>

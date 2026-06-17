@@ -11,4 +11,5 @@ data class UserEntity(
     val age: Int,
     val email: String,
     val enable: Boolean,
+    val photoPath: String? = null
 )

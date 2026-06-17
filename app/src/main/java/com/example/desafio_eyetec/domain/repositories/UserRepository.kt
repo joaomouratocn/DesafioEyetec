@@ -6,7 +6,7 @@ interface UserRepository {
     suspend fun insertUsers(users: List<User>)
     suspend fun updateUser(user: User)
     suspend fun deleteUser(user: User)
-    suspend fun getUserByStatus(status: Boolean): List<User>
+    suspend fun getUsersByStatus(status: Boolean): List<User>
     suspend fun getUserById(id: Long): User?
     suspend fun getAllUsers(): List<User>
     suspend fun searchUsers(query: String): List<User>

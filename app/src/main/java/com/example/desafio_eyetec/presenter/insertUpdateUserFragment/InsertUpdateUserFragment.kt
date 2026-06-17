@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.net.Uri
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -42,14 +43,39 @@ class InsertUpdateUserFragment : Fragment() {
                 binding.edtAge.setText(it.age.toString())
                 binding.edtEmail.setText(it.email)
                 binding.ckbEnable.isChecked = it.enable
-                
-                binding.btnSave.text = getString(R.string.atualizar)
-                (requireActivity() as? androidx.appcompat.app.AppCompatActivity)?.supportActionBar?.title = getString(R.string.editar_usuario)
+
+                binding.btnSave.text = getString(R.string.update)
+                (requireActivity() as? androidx.appcompat.app.AppCompatActivity)?.supportActionBar?.title = getString(R.string.edit_user)
             }
         }
+
+        productViewModel.photoPath.observe(viewLifecycleOwner) { path ->
+            if (path != null) {
+                binding.imgPhoto.setImageURI(Uri.parse(path))
+                binding.btnDeletePhoto.visibility = View.VISIBLE
+            } else {
+                binding.imgPhoto.setImageResource(R.drawable.ic_person)
+                binding.btnDeletePhoto.visibility = View.GONE
+            }
+        }
+
+        // Observe result from CameraFragment
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("photoPath")
+            ?.observe(viewLifecycleOwner) { path ->
+                productViewModel.setPhotoPath(path)
+            }
     }
 
     private fun initConfig(){
+        binding.btnTakePhoto.setOnClickListener {
+            val directions = InsertUpdateUserFragmentDirections.actionInsertUpdateUserFragmentToCameraFragment()
+            navController.navigate(directions)
+        }
+
+        binding.btnDeletePhoto.setOnClickListener {
+            productViewModel.deletePhoto()
+        }
+
         binding.btnSave.setOnClickListener {
             val name = binding.edtName.text.toString()
             val age = binding.edtAge.text.toString().toIntOrNull() ?: 0
@@ -59,7 +85,7 @@ class InsertUpdateUserFragment : Fragment() {
             if (productViewModel.isInvalidName(name)) {
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.nome_invalido),
+                    getString(R.string.invalid_name),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -68,7 +94,7 @@ class InsertUpdateUserFragment : Fragment() {
             if (productViewModel.isInvalidAge(age)) {
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.idade_invalida),
+                    getString(R.string.invalid_age),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -77,7 +103,7 @@ class InsertUpdateUserFragment : Fragment() {
             if (productViewModel.isInvalidEmail(email)) {
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.email_invalido),
+                    getString(R.string.invalid_email),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -86,9 +112,9 @@ class InsertUpdateUserFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 productViewModel.saveUser(name, age, email, enable)
                 val message = if (args.userId == -1L) {
-                    R.string.usuario_salvo_com_sucesso
+                    R.string.user_saved_success
                 } else {
-                    R.string.usuario_atualizado_com_sucesso
+                    R.string.user_updated_success
                 }
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                 navController.popBackStack()

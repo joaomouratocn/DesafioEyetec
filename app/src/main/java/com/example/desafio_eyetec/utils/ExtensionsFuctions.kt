@@ -8,7 +8,8 @@ fun UserEntity.toUser() = User(
     name = this.name,
     age = this.age,
     email = this.email,
-    enable = this.enable
+    enable = this.enable,
+    photoPath = this.photoPath
 )
 
 fun User.toUserEntity() : UserEntity {
@@ -17,6 +18,7 @@ fun User.toUserEntity() : UserEntity {
         name = this.name,
         age = this.age,
         email = this.email,
-        enable = this.enable
+        enable = this.enable,
+        photoPath = this.photoPath
     )
 }

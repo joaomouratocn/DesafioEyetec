@@ -14,6 +14,9 @@ class InsertUpdateUserViewModel(private val userRepository: UserRepository, val 
     private val _user = MutableLiveData<User?>()
     val user: LiveData<User?> = _user
 
+    private val _photoPath = MutableLiveData<String?>()
+    val photoPath: LiveData<String?> = _photoPath
+
     init {
         Log.d("InsertUpdateVM", "Init com userId: $userId")
         if (userId != -1L) {
@@ -27,6 +30,7 @@ class InsertUpdateUserViewModel(private val userRepository: UserRepository, val 
                 val userData = userRepository.getUserById(userId)
                 Log.d("InsertUpdateVM", "Usuário carregado: $userData")
                 _user.value = userData
+                _photoPath.value = userData?.photoPath
             } catch (e: Exception) {
                 Log.e("InsertUpdateVM", "Erro ao carregar usuário com ID: $userId", e)
                 _user.value = null
@@ -46,12 +50,21 @@ class InsertUpdateUserViewModel(private val userRepository: UserRepository, val 
         return !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
+    fun setPhotoPath(path: String) {
+        _photoPath.value = path
+    }
+
+    fun deletePhoto() {
+        _photoPath.value = null
+    }
+
     suspend fun saveUser(name: String, age: Int, email: String, enable: Boolean) {
+        val currentPhotoPath = _photoPath.value
         if (userId == -1L) {
-            val user = User(name = name, age = age, email = email, enable = enable)
+            val user = User(name = name, age = age, email = email, enable = enable, photoPath = currentPhotoPath)
             userRepository.insertUsers(listOf(user))
         } else {
-            val user = User(id = userId, name = name, age = age, email = email, enable = enable)
+            val user = User(id = userId, name = name, age = age, email = email, enable = enable, photoPath = currentPhotoPath)
             userRepository.updateUser(user)
         }
     }

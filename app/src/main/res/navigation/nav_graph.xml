@@ -20,17 +20,25 @@
     <fragment
         android:id="@+id/insertUpdateUserFragment"
         android:name="com.example.desafio_eyetec.presenter.insertUpdateUserFragment.InsertUpdateUserFragment"
-        android:label="@string/novo_usuario"
+        android:label="@string/new_user"
         tools:layout="@layout/fragment_insert_update_user">
         <argument
             android:name="userId"
             app:argType="long"
             android:defaultValue="-1L"/>
+        <action
+            android:id="@+id/action_insertUpdateUserFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.desafio_eyetec.presenter.camera.CameraFragment"
+        android:label="@string/capture_photo"
+        tools:layout="@layout/fragment_camera" />
     <fragment
         android:id="@+id/allUsersFragment"
         android:name="com.example.desafio_eyetec.presenter.allUsers.AllUsersFragment"
-        android:label="@string/todos_usuarios"
+        android:label="@string/all_users"
         tools:layout="@layout/fragment_all_users">
         <action
             android:id="@+id/action_allUsersFragment_to_insertUpdateUserFragment"

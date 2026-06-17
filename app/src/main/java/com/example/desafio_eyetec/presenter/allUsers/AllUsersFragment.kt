@@ -32,12 +32,12 @@ class AllUsersFragment : Fragment() {
 
     private fun showDeleteConfirmation(user: User) {
         AlertDialog.Builder(requireContext())
-            .setTitle(R.string.confirmar_delecao)
-            .setMessage(R.string.tem_certeza_que_deseja_deletar_este_usuario)
-            .setPositiveButton(R.string.sim) { _, _ ->
+            .setTitle(R.string.confirm_deletion)
+            .setMessage(R.string.are_you_sure_delete_user)
+            .setPositiveButton(R.string.yes) { _, _ ->
                 viewModel.deleteUser(user)
             }
-            .setNegativeButton(R.string.nao, null)
+            .setNegativeButton(R.string.no, null)
             .show()
     }
 
