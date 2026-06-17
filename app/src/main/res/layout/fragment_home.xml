@@ -2,29 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
     android:divider="@drawable/vertical_divider"
+    android:gravity="center|top"
+    android:orientation="vertical"
+    android:padding="16dp"
     android:showDividers="middle"
     tools:context=".HomeFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:text="@string/desafio_eyetec" />
-
     <Button
         android:id="@+id/btn_new_user"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/novo_usuario" />
 
     <Button
         android:id="@+id/btn_all_users"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/todos_usuarios" />
 </LinearLayout>

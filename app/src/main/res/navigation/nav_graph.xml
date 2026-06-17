@@ -8,6 +8,15 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.desafio_eyetec.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        android:label="@string/desafio_eyetec"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_insertUpdateUserFragment"
+            app:destination="@id/insertUpdateUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/insertUpdateUserFragment"
+        android:name="com.example.desafio_eyetec.InsertUpdateUserFragment"
+        android:label="@string/novo_usuario"
+        tools:layout="@layout/fragment_insert_update_user" />
 </navigation>

@@ -1,70 +1,35 @@
 package com.example.desafio_eyetec
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.desafio_eyetec.databinding.ActivityMainBinding
-import com.example.desafio_eyetec.domain.models.User
-import com.example.desafio_eyetec.domain.repositories.UserRepository
-import com.example.desafio_eyetec.domain.repositories.UserRepositoryLocalImpl
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var userRepository: UserRepository
-    private lateinit var binding: ActivityMainBinding
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
+    private val navController by lazy { findNavController(R.id.nav_host_fragment) }
+
+    private val appBarConfiguration by lazy { AppBarConfiguration(navController.graph) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.mainToolbar)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            title = destination.label
         }
 
-        val app = applicationContext as DesafioEyetecApp
-        userRepository = UserRepositoryLocalImpl(app.database.UserDao())
-
-        testDb()
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
-    private fun testDb() {
-        lifecycleScope.launch {
-            val newUserEnable =
-                User(
-                    name = "Arthur",
-                    age = 7,
-                    email = "arthur@gmail.com",
-                    enable = true
-                )
-            val newUserDisable = User(
-                name = "João Neto",
-                age = 36,
-                email = "joaomouratocn@gmail.com",
-                enable = false
-            )
-//            userRepository.insertUsers(listOf(newUserEnable, newUserDisable))
-//            Log.d("USERS", userRepository.getUserByStatus(true).toString())
-//            Log.d("USERS", userRepository.getUserByStatus(false).toString())
-//            Log.d("USERS", "Usuários cadasrados")
-//
-//            val disableUsers = userRepository.getUserByStatus(false)
-//            val editedUser = disableUsers.first().copy(enable = true)
-//            userRepository.updateUser(editedUser)
-//            Log.d("USERS", userRepository.getUserByStatus(true).toString())
-//            Log.d("USERS", userRepository.getUserByStatus(false).toString())
-//            Log.d("USERS", "Usuarios alterados")
-//
-//            userRepository.deleteUser(editedUser)
-//            Log.d("USERS", userRepository.getUserByStatus(true).toString())
-//            Log.d("USERS", "Usuarios alterados")
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

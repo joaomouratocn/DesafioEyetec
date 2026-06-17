@@ -5,5 +5,16 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="Base_ToolbarStyle">
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:theme">@style/Base_ToolbarTheme</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+
+    <style name="Base_ToolbarTheme">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
     <style name="Theme.DesafioEyetec" parent="Base.Theme.DesafioEyetec" />
 </resources>
