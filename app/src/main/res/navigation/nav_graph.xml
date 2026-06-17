@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_insertUpdateUserFragment"
             app:destination="@id/insertUpdateUserFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_allUsersFragment"
+            app:destination="@id/allUsersFragment" />
     </fragment>
     <fragment
         android:id="@+id/insertUpdateUserFragment"
@@ -23,5 +26,14 @@
             android:name="userId"
             app:argType="long"
             android:defaultValue="-1L"/>
+    </fragment>
+    <fragment
+        android:id="@+id/allUsersFragment"
+        android:name="com.example.desafio_eyetec.presenter.allUsers.AllUsersFragment"
+        android:label="@string/todos_usuarios"
+        tools:layout="@layout/fragment_all_users">
+        <action
+            android:id="@+id/action_allUsersFragment_to_insertUpdateUserFragment"
+            app:destination="@id/insertUpdateUserFragment" />
     </fragment>
 </navigation>

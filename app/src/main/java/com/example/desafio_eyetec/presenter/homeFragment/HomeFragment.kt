@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnAllUsers.setOnClickListener {
-            val directions = HomeFragmentDirections.actionHomeFragmentToInsertUpdateUserFragment(1L)
+            val directions = HomeFragmentDirections.actionHomeFragmentToAllUsersFragment()
             navController.navigate(directions)
         }
     }

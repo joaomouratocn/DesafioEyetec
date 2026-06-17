@@ -16,4 +16,14 @@
     <string name="nome_invalido">Nome inválido</string>
     <string name="idade_invalida">Idade inválida</string>
     <string name="email_invalido">Email inválido</string>
+    <string name="insira_o_nome_do_usuario">Insira o nome do usuário</string>
+    <string name="editar">Editar</string>
+    <string name="deletar">Deletar</string>
+    <string name="buscar_usuario">Buscar usuário...</string>
+    <string name="confirmar_delecao">Confirmar deleção</string>
+    <string name="tem_certeza_que_deseja_deletar_este_usuario">Tem certeza que deseja deletar este usuário?</string>
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
+    <string name="usuario_salvo_com_sucesso">Usuário salvo com sucesso!</string>
+    <string name="usuario_atualizado_com_sucesso">Usuário atualizado com sucesso!</string>
 </resources>

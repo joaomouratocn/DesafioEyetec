@@ -85,6 +85,12 @@ class InsertUpdateUserFragment : Fragment() {
 
             viewLifecycleOwner.lifecycleScope.launch {
                 productViewModel.saveUser(name, age, email, enable)
+                val message = if (args.userId == -1L) {
+                    R.string.usuario_salvo_com_sucesso
+                } else {
+                    R.string.usuario_atualizado_com_sucesso
+                }
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                 navController.popBackStack()
             }
         }

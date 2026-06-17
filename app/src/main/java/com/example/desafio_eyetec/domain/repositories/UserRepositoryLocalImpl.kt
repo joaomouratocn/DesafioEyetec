@@ -26,4 +26,12 @@ class UserRepositoryLocalImpl(private val userDao: UserDao): UserRepository {
     override suspend fun getUserById(id: Long): User? {
         return userDao.getUserById(id)?.toUser()
     }
+
+    override suspend fun getAllUsers(): List<User> {
+        return userDao.getAllUsers().map { it.toUser() }
+    }
+
+    override suspend fun searchUsers(query: String): List<User> {
+        return userDao.searchUsers(query).map { it.toUser() }
+    }
 }
