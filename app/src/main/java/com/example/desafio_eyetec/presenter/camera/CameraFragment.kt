@@ -84,16 +84,9 @@ class CameraFragment : Fragment() {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
                 .also {
-                    it.setAnalyzer(cameraExecutor, FaceAnalyzer { faceDetected ->
+                    it.setAnalyzer(cameraExecutor, FaceAnalyzer { feedback ->
                         activity?.runOnUiThread {
-                            if (faceDetected) {
-                                binding.txtGuidance.text =
-                                    getString(R.string.face_detected_can_capture)
-                                binding.faceOverlay.setBackgroundResource(R.drawable.face_guidance_border_green)
-                            } else {
-                                binding.txtGuidance.text = getString(R.string.position_face_center)
-                                binding.faceOverlay.setBackgroundResource(R.drawable.face_guidance_border)
-                            }
+                            updateUI(feedback)
                         }
                     })
                 }
@@ -114,6 +107,36 @@ class CameraFragment : Fragment() {
             }
 
         }, ContextCompat.getMainExecutor(requireContext()))
+    }
+
+    private fun updateUI(feedback: FaceFeedback) {
+        when (feedback) {
+            FaceFeedback.NONE -> {
+                binding.txtGuidance.text = getString(R.string.position_face_center)
+                binding.faceOverlay.setBackgroundResource(R.drawable.face_guidance_border)
+                binding.btnCapture.isEnabled = false
+            }
+            FaceFeedback.TOO_FAR -> {
+                binding.txtGuidance.text = getString(R.string.face_too_far)
+                binding.faceOverlay.setBackgroundResource(R.drawable.face_guidance_border)
+                binding.btnCapture.isEnabled = false
+            }
+            FaceFeedback.TOO_CLOSE -> {
+                binding.txtGuidance.text = getString(R.string.face_too_close)
+                binding.faceOverlay.setBackgroundResource(R.drawable.face_guidance_border)
+                binding.btnCapture.isEnabled = false
+            }
+            FaceFeedback.NOT_CENTERED -> {
+                binding.txtGuidance.text = getString(R.string.face_not_centered)
+                binding.faceOverlay.setBackgroundResource(R.drawable.face_guidance_border)
+                binding.btnCapture.isEnabled = false
+            }
+            FaceFeedback.GOOD -> {
+                binding.txtGuidance.text = getString(R.string.face_detected)
+                binding.faceOverlay.setBackgroundResource(R.drawable.face_guidance_border_green)
+                binding.btnCapture.isEnabled = true
+            }
+        }
     }
 
     private fun takePhoto() {
@@ -153,7 +176,11 @@ class CameraFragment : Fragment() {
         requireContext(), Manifest.permission.CAMERA
     ) == PackageManager.PERMISSION_GRANTED
 
-    private class FaceAnalyzer(private val onFaceDetected: (Boolean) -> Unit) :
+    private enum class FaceFeedback {
+        NONE, TOO_FAR, TOO_CLOSE, NOT_CENTERED, GOOD
+    }
+
+    private class FaceAnalyzer(private val onFaceDetected: (FaceFeedback) -> Unit) :
         ImageAnalysis.Analyzer {
         private val detector = FaceDetection.getClient(
             FaceDetectorOptions.Builder()
@@ -169,10 +196,37 @@ class CameraFragment : Fragment() {
                     InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
                 detector.process(image)
                     .addOnSuccessListener { faces ->
-                        onFaceDetected(faces.isNotEmpty())
+                        if (faces.isEmpty()) {
+                            onFaceDetected(FaceFeedback.NONE)
+                        } else {
+                            val face = faces[0]
+                            val boundingBox = face.boundingBox
+                            
+                            // Image dimensions (post-rotation)
+                            val isRotated = imageProxy.imageInfo.rotationDegrees == 90 || imageProxy.imageInfo.rotationDegrees == 270
+                            val width = if (isRotated) imageProxy.height.toFloat() else imageProxy.width.toFloat()
+                            val height = if (isRotated) imageProxy.width.toFloat() else imageProxy.height.toFloat()
+                            
+                            // Face dimensions relative to image
+                            val faceWidth = boundingBox.width().toFloat() / width
+                            val faceHeight = boundingBox.height().toFloat() / height
+                            val faceArea = faceWidth * faceHeight
+                            
+                            // Face center relative to image (0.0 to 1.0)
+                            val centerX = boundingBox.centerX().toFloat() / width
+                            val centerY = boundingBox.centerY().toFloat() / height
+                            
+                            val feedback = when {
+                                faceArea < 0.25 -> FaceFeedback.TOO_FAR
+                                faceArea > 0.50 -> FaceFeedback.TOO_CLOSE
+                                centerX < 0.4 || centerX > 0.6 || centerY < 0.45 || centerY > 0.55 -> FaceFeedback.NOT_CENTERED
+                                else -> FaceFeedback.GOOD
+                            }
+                            onFaceDetected(feedback)
+                        }
                     }
                     .addOnFailureListener {
-                        onFaceDetected(false)
+                        onFaceDetected(FaceFeedback.NONE)
                     }
                     .addOnCompleteListener {
                         imageProxy.close()

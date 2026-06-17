@@ -29,9 +29,12 @@
     <string name="take_photo">Tirar Foto</string>
     <string name="capture">Capturar</string>
     <string name="position_face_center">Posicione seu rosto no centro</string>
-    <string name="face_detected_can_capture">Rosto detectado! Pode capturar.</string>
+    <string name="face_detected">Rosto detectado!</string>
     <string name="user_photo">Foto do usuário</string>
     <string name="permission_denied">Permissão de câmera negada</string>
     <string name="capture_photo">Capturar Foto</string>
     <string name="delete_photo">Deletar Foto</string>
+    <string name="face_too_far">Aproxime o rosto da câmera</string>
+    <string name="face_too_close">Afaste o rosto da câmera</string>
+    <string name="face_not_centered">Centralize o rosto no círculo</string>
 </resources>
