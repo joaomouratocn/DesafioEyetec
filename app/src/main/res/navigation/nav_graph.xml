@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.desafio_eyetec.HomeFragment"
+        android:name="com.example.desafio_eyetec.presenter.homeFragment.HomeFragment"
         android:label="@string/desafio_eyetec"
         tools:layout="@layout/fragment_home" >
         <action
@@ -16,7 +16,12 @@
     </fragment>
     <fragment
         android:id="@+id/insertUpdateUserFragment"
-        android:name="com.example.desafio_eyetec.InsertUpdateUserFragment"
+        android:name="com.example.desafio_eyetec.presenter.insertUpdateUserFragment.InsertUpdateUserFragment"
         android:label="@string/novo_usuario"
-        tools:layout="@layout/fragment_insert_update_user" />
+        tools:layout="@layout/fragment_insert_update_user">
+        <argument
+            android:name="userId"
+            app:argType="long"
+            android:defaultValue="-1L"/>
+    </fragment>
 </navigation>

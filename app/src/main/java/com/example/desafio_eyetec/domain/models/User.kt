@@ -1,9 +1,7 @@
 package com.example.desafio_eyetec.domain.models
 
-import java.util.UUID
-
 data class User(
-    val id: UUID? = null,
+    val id: Long? = null,
     val name: String,
     val age: Int,
     val email: String,

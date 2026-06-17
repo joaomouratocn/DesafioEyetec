@@ -11,14 +11,12 @@ fun UserEntity.toUser() = User(
     enable = this.enable
 )
 
-fun User.toUserEntity() : UserEntity{
-    val entity = UserEntity(
+fun User.toUserEntity() : UserEntity {
+    return UserEntity(
+        id = this.id ?: 0L,
         name = this.name,
         age = this.age,
         email = this.email,
         enable = this.enable
     )
-
-    this.id?.let { entity.id = it }
-    return entity
 }

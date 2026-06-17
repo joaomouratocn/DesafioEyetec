@@ -22,4 +22,8 @@ class UserRepositoryLocalImpl(private val userDao: UserDao): UserRepository {
     override suspend fun getUserByStatus(status: Boolean): List<User> {
         return userDao.getUsersByStatus(status).map { userEntity -> userEntity.toUser() }
     }
+
+    override suspend fun getUserById(id: Long): User? {
+        return userDao.getUserById(id)?.toUser()
+    }
 }

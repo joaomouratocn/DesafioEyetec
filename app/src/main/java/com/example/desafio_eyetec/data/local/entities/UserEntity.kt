@@ -2,15 +2,13 @@ package com.example.desafio_eyetec.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.UUID
 
 @Entity(tableName = "users")
 data class UserEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
     val name: String,
     val age: Int,
     val email: String,
     val enable: Boolean,
-){
-    @PrimaryKey
-    var id: UUID = UUID.randomUUID()
-}
+)

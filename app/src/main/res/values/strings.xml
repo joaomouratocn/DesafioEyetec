@@ -5,4 +5,15 @@
     <string name="desafio_eyetec">Desafio Eyetec</string>
     <string name="novo_usuario">Novo Usuário</string>
     <string name="todos_usuarios">Todos usuários</string>
+    <string name="nome_completo">Nome completo</string>
+    <string name="idade">Idade</string>
+    <string name="email">Email</string>
+    <string name="ativo">Ativo</string>
+    <string name="cancel">Cancelar</string>
+    <string name="salvar">Salvar</string>
+    <string name="atualizar">Atualizar</string>
+    <string name="editar_usuario">Editar Usuário</string>
+    <string name="nome_invalido">Nome inválido</string>
+    <string name="idade_invalida">Idade inválida</string>
+    <string name="email_invalido">Email inválido</string>
 </resources>

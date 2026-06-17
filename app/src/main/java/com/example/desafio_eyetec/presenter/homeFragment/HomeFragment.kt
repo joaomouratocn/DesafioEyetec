@@ -1,4 +1,4 @@
-package com.example.desafio_eyetec
+package com.example.desafio_eyetec.presenter.homeFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,9 +30,8 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnAllUsers.setOnClickListener {
-            // Navegar para todos usuários fragment
-            // val navController = Navigation.findNavController(view)
-            // navController.navigate(R.id.action_home_to_todos_usuarios)
+            val directions = HomeFragmentDirections.actionHomeFragmentToInsertUpdateUserFragment(1L)
+            navController.navigate(directions)
         }
     }
 }

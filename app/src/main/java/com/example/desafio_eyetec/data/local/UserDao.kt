@@ -17,4 +17,7 @@ interface UserDao {
     suspend fun deleteUser(user: UserEntity)
     @Query("SELECT * FROM users WHERE enable = :status")
     suspend fun getUsersByStatus(status: Boolean): List<UserEntity>
+
+    @Query("SELECT * FROM users WHERE id = :id")
+    suspend fun getUserById(id: Long): UserEntity?
 }
